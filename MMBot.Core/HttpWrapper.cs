@@ -150,6 +150,22 @@ namespace MMBot
             }
         }
 
+        public async Task<T> GetJson<T>()
+        {
+            try
+            {
+                var response = await DoGet();
+                response.EnsureSuccessStatusCode();
+                var result = await response.Content.ReadAsStringAsync();
+                return await JsonConvert.DeserializeObjectAsync<T>(result);
+            }
+            catch (Exception e)
+            {
+                _logger.Error("Http GetJson error", e);
+                throw;
+            }
+        }
+
         public async Task GetJson(Action<Exception, HttpResponseMessage, JToken> callback)
         {
             HttpResponseMessage response = null;
