@@ -1,18 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMBot.Core", "MMBot.Core\MMBot.Core.csproj", "{0CF33652-B99B-4854-BC70-250B6C2F646A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMBot.Jabbr", "MMBot.Jabbr\MMBot.Jabbr.csproj", "{B7AD2B74-C2DD-49F5-9241-BDC5E5F71F23}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E502EF5B-FEF5-43D4-A64E-AA982999DBB7}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMBot.Spotify", "MMBot.Spotify\MMBot.Spotify.csproj", "{59C1FAA7-D7F0-4032-A850-A4FF03F890F6}"
 EndProject
