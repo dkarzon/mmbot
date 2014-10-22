@@ -150,7 +150,7 @@ namespace MMBot
             }
         }
 
-        public async Task<T> GetJson<T>()
+        public async Task<T> GetJsonT<T>()
         {
             try
             {

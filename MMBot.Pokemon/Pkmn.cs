@@ -50,7 +50,7 @@ namespace MMBot.Pokemon
                 await msg.SendFormat(_mediaFormatUrl, myPkmn.National_Id);
 
                 currentBattle.BotPokemon = myPkmn;
-
+                
                 await SaveBattle(currentBattle, robot.Brain);
             });
 
@@ -177,12 +177,12 @@ namespace MMBot.Pokemon
 
         private Task<PkmnPokemon> GetPokemon(IResponse<TextMessage> msg, int pokeId)
         {
-            return msg.Http(string.Format("{0}pokemon/{1}", _pokeBaseApi, pokeId)).GetJson<PkmnPokemon>();
+            return msg.Http(string.Format("{0}pokemon/{1}", _pokeBaseApi, pokeId)).GetJsonT<PkmnPokemon>();
         }
 
         private Task<PkmnMoveFull> GetMove(IResponse<TextMessage> msg, int moveId)
         {
-            return msg.Http(string.Format("{0}move/{1}", _pokeBaseApi, moveId)).GetJson<PkmnMoveFull>();
+            return msg.Http(string.Format("{0}move/{1}", _pokeBaseApi, moveId)).GetJsonT<PkmnMoveFull>();
         }
 
         private async Task<PkmnPokedex> GetPokeDex(IResponse<TextMessage> msg, Brains.IBrain brain)
@@ -195,7 +195,7 @@ namespace MMBot.Pokemon
                 return brainDex;
             }
 
-            var newDex = await msg.Http(string.Format("{0}pokedex/1/", _pokeBaseApi)).GetJson<PkmnPokedex>();
+            var newDex = await msg.Http(string.Format("{0}pokedex/1/", _pokeBaseApi)).GetJsonT<PkmnPokedex>();
             await brain.Set(_pokedexKey, newDex);
 
             return newDex;
