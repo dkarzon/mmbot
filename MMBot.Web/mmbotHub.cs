@@ -10,52 +10,75 @@ using System.Threading.Tasks;
 
 namespace MMBot.Web
 {
+    public class BotStore
+    {
+        public Robot Robot { get; set; }
+        public ScriptRunner ScriptRunner { get; set; }
+    }
+
     public class mmbotHub : Hub
     {
-        private static Robot _robot;
+        //TODO - This seems wrong
+        private static Dictionary<string, BotStore> _robots = new Dictionary<string, BotStore>();
 
-        public void StartBot()
+
+        public override async Task OnConnected()
         {
-            //start up the robot
+            await base.OnConnected();
+            
+            //BUILD ME A ROBOT!
+            await GetOrCreateRobot();
         }
 
-        public void SendCommand(string command)
+        private async Task<BotStore> GetOrCreateRobot(bool force = false)
         {
-            var logging = new WebLogger(Clients.Caller);
-            if (_robot == null)
+            if (force && _robots.ContainsKey(Context.ConnectionId))
             {
-                logging.Error("These aren't the droids you're looking for...");
-                return;
+                _robots.Remove(Context.ConnectionId);
             }
-            _robot.Receive(new TextMessage(GetCurrentUser(), command));
+            if (!force && _robots.ContainsKey(Context.ConnectionId))
+            {
+                return _robots[Context.ConnectionId];
+            }
+            var logger = new WebLogger(Clients.Caller);
+            var scriptRunner = new ScriptRunner(logger);
+            var robot = await BotHelper.BuildRobot();
+            robot.Adapters.Add("web", new WebAdapter(Clients.Caller, logger));
+
+            scriptRunner.Initialize(robot);
+
+            var botStore = new BotStore { Robot = robot, ScriptRunner = scriptRunner };
+            
+            _robots.Add(Context.ConnectionId, botStore);
+
+            return botStore;
+        }
+
+        public async Task SendCommand(string command)
+        {
+            var bot = await GetOrCreateRobot();
+            bot.Robot.Receive(new TextMessage(GetCurrentUser(), command));
         }
 
         private User GetCurrentUser()
         {
-            return new User(Context.ConnectionId, "mmbot.web", new List<string>() { "admin" }, "main", "mmbot.web");
+            return new User(Context.ConnectionId, "mmbot.web", new List<string>() { "admin" }, "main", "web");
         }
 
         public async Task BuildScript(string script)
         {
-            var logging = new WebLogger(Clients.Caller);
+            var bot = await GetOrCreateRobot(true);
             try
-            {
-                //TODO - move this stuff to StartBot
-                var scriptRunner = new ScriptRunner(logging);
-                //TODO - create a robot instance per client
-                _robot = await BotHelper.BuildRobot();
-
-                scriptRunner.Initialize(_robot);
-
+            {                
                 //write the script to file
                 //TODO - something better than this? (Multi-user, etc.)
-                var filePath = HostingEnvironment.MapPath("~/scripts/temp.csx");
+                var filePath = HostingEnvironment.MapPath(string.Format("~/scripts/{0}.csx", Context.ConnectionId));
                 File.WriteAllText(filePath, script);
 
                 //compile the script
-                scriptRunner.RunScript(new ScriptCsScriptFile
+                bot.ScriptRunner.RunScript(new ScriptCsScriptFile
                 {
-                    Name = "temp",
+                    Name = Context.ConnectionId,
                     Path = filePath
                 });
                 //load it into mmbot
@@ -63,7 +86,7 @@ namespace MMBot.Web
             }
             catch(Exception ex)
             {
-                logging.Error("Failed to load build script", ex);
+                bot.Robot.Logger.Error("Failed to load build script", ex);
             }
         }
     }

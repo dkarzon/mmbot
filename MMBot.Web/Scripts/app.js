@@ -8,18 +8,23 @@
 
     var _mmbotweb;
 
-    function _initialize() {
+    function _initialize(callback) {
 
         // Declare a proxy to reference the hub.
         _mmbotweb = $.connection.mmbotHub;
         // Create a function that the hub can call to broadcast messages.
         _mmbotweb.client.buildResult = _buildResult;
+        _mmbotweb.client.newmessage = _newmessage;
         // Start the connection.
-        $.connection.hub.start();
+        $.connection.hub.start().done(callback);
     };
 
     function _buildResult(buildLog) {
         $rootScope.$emit("buildResult", buildLog);
+    };
+
+    function _newmessage(message) {
+        $rootScope.$emit("newmessage", message);
     };
 
     function _buildScript(message) {
@@ -40,11 +45,17 @@
 .controller('mmbotCtrl', ['$scope', '$rootScope', 'signalRSvc', function ($scope, $rootScope, signalRSvc) {
 
     //start me up baby
-    signalRSvc.initialize();
+    $scope.loading = true;
+    signalRSvc.initialize(function () {
+        $scope.$apply(function () {
+            $scope.loading = false;
+        });
+    });
 
     $scope.scriptfile = 'var robot = Require<Robot>();\nrobot.Respond("updog", msg => msg.Send("What\'s up dog?"));';
     $scope.command = 'mmbot updog';
     $rootScope.buildLogs = [];
+    $rootScope.messages = [];
 
     $rootScope.compile = function () {
         signalRSvc.buildScript($scope.scriptfile);
@@ -58,6 +69,13 @@
         //scope.$apply because different thread/context/angle
         $rootScope.$apply(function () {
             $rootScope.buildLogs.push(buildLog);
+        });
+    });
+
+    $rootScope.$on('newmessage', function (e, message) {
+        //scope.$apply because different thread/context/angle
+        $rootScope.$apply(function () {
+            $rootScope.messages.push(message);
         });
     });
 

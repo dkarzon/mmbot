@@ -43,6 +43,14 @@
         li.info {
             color: darkblue;
         }
+        .list-left {
+            width: 45%;
+            float: left;
+        }
+        .list-right {
+            width: 45%;
+            float: right;
+        }
     </style>
 
 </head>
@@ -55,12 +63,26 @@
             <img class="logo" src="img/mmbot.avatar.png" />
         </div>
         <textarea class="scripteditor" ng-model="scriptfile"></textarea>
-        <div class="btn" ng-click="compile()">Compile</div>
-        <input type="text" ng-model="command" />
-        <div class="btn" ng-click="send()">Send</div>
-        <ul>
-            <li ng-repeat="l in buildLogs" ng-class="l.type" ng-bind="l.message"></li>
-        </ul>
+        <div ng-show="loading">
+            loading...
+        </div>
+        <div ng-hide="loading">
+            <div class="btn" ng-click="compile()">Compile</div>
+            <div>
+                <input type="text" ng-model="command" />
+                <div class="btn" ng-click="send()">Send</div>
+            </div>
+            <div>
+                <ul class="list-left">
+                    <li><strong>messages</strong></li>
+                    <li ng-repeat="m in messages"><em>mmbot: </em>{{m}}</li>
+                </ul>
+                <ul class="list-right">
+                    <li><strong>log</strong></li>
+                    <li ng-repeat="l in buildLogs" ng-class="l.type" ng-bind="l.message"></li>
+                </ul>
+            </div>
+        </div>
     </div>
 
 
