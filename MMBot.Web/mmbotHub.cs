@@ -53,6 +53,9 @@ namespace MMBot.Web
         {
             if (force && _robots.ContainsKey(Context.ConnectionId))
             {
+                var oldBot = _robots[Context.ConnectionId];
+                oldBot.Robot.Shutdown();
+                
                 _robots.Remove(Context.ConnectionId);
             }
             if (!force && _robots.ContainsKey(Context.ConnectionId))
@@ -76,6 +79,7 @@ namespace MMBot.Web
         public async Task SendCommand(string command)
         {
             var bot = await GetOrCreateRobot();
+
             bot.Robot.Receive(new TextMessage(GetCurrentUser(), command));
         }
 
