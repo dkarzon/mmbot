@@ -2,7 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
-VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMBot.Core", "MMBot.Core\MMBot.Core.csproj", "{0CF33652-B99B-4854-BC70-250B6C2F646A}"
 EndProject
@@ -37,6 +36,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMBot.RedisBrain", "MMBot.RedisBrain\MMBot.RedisBrain.csproj", "{98725225-B3F4-40DB-8346-5B09E81C0CE6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMBot.Pokemon", "MMBot.Pokemon\MMBot.Pokemon.csproj", "{652A8CD6-B621-4F88-82EC-7C74417B660F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMBot.Web", "MMBot.Web\MMBot.Web.csproj", "{D17BBBC4-44D5-4475-AA3A-AEAC892F63B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -148,6 +149,12 @@ Global
 		{652A8CD6-B621-4F88-82EC-7C74417B660F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{652A8CD6-B621-4F88-82EC-7C74417B660F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{652A8CD6-B621-4F88-82EC-7C74417B660F}.Release|x64.ActiveCfg = Release|Any CPU
+		{D17BBBC4-44D5-4475-AA3A-AEAC892F63B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D17BBBC4-44D5-4475-AA3A-AEAC892F63B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D17BBBC4-44D5-4475-AA3A-AEAC892F63B6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D17BBBC4-44D5-4475-AA3A-AEAC892F63B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D17BBBC4-44D5-4475-AA3A-AEAC892F63B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D17BBBC4-44D5-4475-AA3A-AEAC892F63B6}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

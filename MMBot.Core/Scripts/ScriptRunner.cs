@@ -163,13 +163,13 @@ namespace MMBot.Scripts
 
                 scriptServicesBuilder.Cache(false);
 
-                scriptServicesBuilder.LoadModules("csx");
+                //scriptServicesBuilder.LoadModules("csx");
                 var scriptServiceRoot = scriptServicesBuilder.Build();
 
                 var defaultReferences = ScriptExecutor.DefaultReferences.ToArray();
 
                 var fileSystem = new FileSystem();
-                //where clause hack using the exact same code that the hack in scriptCS sues to filter their list of assemblies in ShouldLoadAssembly in RuntimeServices.cs
+                //where clause hack using the exact same code that the hack in scriptCS uses to filter their list of assemblies in ShouldLoadAssembly in RuntimeServices.cs
                 var packageReferences = scriptServiceRoot.PackageAssemblyResolver.GetAssemblyNames(Environment.CurrentDirectory).Where(fileSystem.IsPathRooted);
 
                 scriptServiceRoot.Executor.AddReferences(defaultReferences.Concat(NuGetPackageAssemblyResolver.FilterAssembliesToMostRecent(packageReferences)).ToArray());
