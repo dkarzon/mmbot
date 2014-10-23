@@ -37,13 +37,18 @@
             width: 100px;
             height: 100px;
         }
+        li.error{
+            color: maroon;
+        }
+        li.info {
+            color: darkblue;
+        }
     </style>
 
 </head>
 <body ng-controller="mmbotCtrl">
 
-    <!--http://sravi-kiran.blogspot.co.nz/2013/09/ABetterWayOfUsingAspNetSignalRWithAngularJs.html-->
-    <!--https://github.com/JustMaier/angular-signalr-hub-->
+    <!--http://www.asp.net/signalr/overview/guide-to-the-api/hubs-api-guide-server-->
 
     <div class="container">
         <div>
@@ -51,7 +56,11 @@
         </div>
         <textarea class="scripteditor" ng-model="scriptfile"></textarea>
         <div class="btn" ng-click="compile()">Compile</div>
-        <div ng-bind="buildResult"></div>
+        <input type="text" ng-model="command" />
+        <div class="btn" ng-click="send()">Send</div>
+        <ul>
+            <li ng-repeat="l in buildLogs" ng-class="l.type" ng-bind="l.message"></li>
+        </ul>
     </div>
 
 

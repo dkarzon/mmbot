@@ -73,10 +73,16 @@ namespace MMBot.Web
 
         public void Error(object message, Exception exception)
         {
+            _client.buildResult(new BuildLog { type = "error", message = message + Environment.NewLine + exception.Message + Environment.NewLine + exception.StackTrace });
         }
 
         public void Error(object message)
         {
+            try
+            {
+                _client.buildResult(new BuildLog { type = "error", message = message.ToString() });
+            }
+            catch { }
         }
 
         public void ErrorFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args)
@@ -157,6 +163,11 @@ namespace MMBot.Web
 
         public void Info(object message)
         {
+            try
+            {
+                _client.buildResult(new BuildLog { type = "info", message = message.ToString() });
+            }
+            catch { }
         }
 
         public void InfoFormat(IFormatProvider formatProvider, string format, Exception exception, params object[] args)

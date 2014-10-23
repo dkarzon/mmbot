@@ -18,17 +18,22 @@
         $.connection.hub.start();
     };
 
-    function _buildResult(message) {
-        $rootScope.$emit("buildResult", message);
+    function _buildResult(buildLog) {
+        $rootScope.$emit("buildResult", buildLog);
     };
 
     function _buildScript(message) {
         _mmbotweb.server.buildScript(message);
     };
 
+    function _sendCommand(command) {
+        _mmbotweb.server.sendCommand(command);
+    };
+
     return {
         initialize: _initialize,
-        buildScript: _buildScript
+        buildScript: _buildScript,
+        sendCommand: _sendCommand
     };
 }])
 
@@ -38,15 +43,21 @@
     signalRSvc.initialize();
 
     $scope.scriptfile = 'var robot = Require<Robot>();\nrobot.Respond("updog", msg => msg.Send("What\'s up dog?"));';
+    $scope.command = 'mmbot updog';
+    $rootScope.buildLogs = [];
 
     $rootScope.compile = function () {
         signalRSvc.buildScript($scope.scriptfile);
     };
 
-    $rootScope.$on('buildResult', function (e, message) {
+    $rootScope.send = function () {
+        signalRSvc.sendCommand($scope.command);
+    };
+
+    $rootScope.$on('buildResult', function (e, buildLog) {
         //scope.$apply because different thread/context/angle
         $rootScope.$apply(function () {
-            $rootScope.buildResult = message;
+            $rootScope.buildLogs.push(buildLog);
         });
     });
 

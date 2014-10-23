@@ -17,6 +17,7 @@ using Roslyn.Scripting.CSharp;
 using ScriptCs;
 using ScriptCs.Contracts;
 using ScriptCs.Hosting;
+using ScriptCs.Engine.Roslyn;
 
 namespace MMBot.Scripts
 {
@@ -162,8 +163,13 @@ namespace MMBot.Scripts
                 var scriptServicesBuilder = new ScriptServicesBuilder(console, _logger);
 
                 scriptServicesBuilder.Cache(false);
+                //This is required for some reason?
+                if (!scriptServicesBuilder.Overrides.ContainsKey(typeof(IScriptEngine)))
+                {
+                    scriptServicesBuilder.Overrides[typeof(IScriptEngine)] = typeof(RoslynScriptInMemoryEngine);
+                }
 
-                //scriptServicesBuilder.LoadModules("csx");
+                scriptServicesBuilder.LoadModules("csx");
                 var scriptServiceRoot = scriptServicesBuilder.Build();
 
                 var defaultReferences = ScriptExecutor.DefaultReferences.ToArray();
