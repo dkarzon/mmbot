@@ -30,6 +30,25 @@ namespace MMBot.Web
             await GetOrCreateRobot();
         }
 
+        public override async Task OnReconnected()
+        {
+            await base.OnReconnected();
+
+            //BUILD ME A ROBOT!
+            await GetOrCreateRobot();
+        }
+
+        public override Task OnDisconnected(bool stopCalled)
+        {
+            //kill the robot!
+            if (_robots.ContainsKey(Context.ConnectionId))
+            {
+                _robots.Remove(Context.ConnectionId);
+            }
+
+            return base.OnDisconnected(stopCalled);
+        }
+
         private async Task<BotStore> GetOrCreateRobot(bool force = false)
         {
             if (force && _robots.ContainsKey(Context.ConnectionId))
