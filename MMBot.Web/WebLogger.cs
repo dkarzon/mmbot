@@ -73,14 +73,14 @@ namespace MMBot.Web
 
         public void Error(object message, Exception exception)
         {
-            _client.buildResult(new BuildLog { type = "error", message = message + Environment.NewLine + exception.Message + Environment.NewLine + exception.StackTrace });
+            _client.buildResult(new BotLog { type = "error", message = message + Environment.NewLine + exception.Message + Environment.NewLine + exception.StackTrace });
         }
 
         public void Error(object message)
         {
             try
             {
-                _client.buildResult(new BuildLog { type = "error", message = message.ToString() });
+                _client.buildResult(new BotLog { type = "error", message = message.ToString() });
             }
             catch { }
         }
@@ -165,7 +165,7 @@ namespace MMBot.Web
         {
             try
             {
-                _client.buildResult(new BuildLog { type = "info", message = message.ToString() });
+                _client.buildResult(new BotLog { type = "info", message = message.ToString() });
             }
             catch { }
         }
