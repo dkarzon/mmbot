@@ -43,6 +43,9 @@ namespace MMBot.Web
             //kill the robot!
             if (_robots.ContainsKey(Context.ConnectionId))
             {
+                var oldBot = _robots[Context.ConnectionId];
+                oldBot.Robot.Shutdown();
+
                 _robots.Remove(Context.ConnectionId);
             }
 
